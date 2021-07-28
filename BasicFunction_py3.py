@@ -41,6 +41,12 @@ idw               # the sub function creates a wight matrix (it will be used in 
 radar_adj_idw       # the sub function output is adjusted radar raster file utilizing gauge data and Inverse Distance Weighting method
 """
    
+######################################
+#Test
+######################################
+def test():
+    print('Test importing module from github')
+    
 ###############################################################################
 # InverseD_Inter
 ###############################################################################
@@ -1675,7 +1681,7 @@ def RasterMap(RasterPath, ShapeFile, OutFilePath, title, minPr, maxPr):
                 projection='lcc',lat_1=33,lat_2=45,lon_0=-95)
     
     # This just plots the shapefile -- it has already been clipped
-    m.readshapefile(ShapeFile,'Counties',drawbounds=True, color='0.3')
+    m.readshapefile(ShapeFile,'Counties',drawbounds=True, color='0.3',linewidth=1.5)
     
     #This just plots the Nexrad Point shapefile 
     Radar=m.readshapefile('O:/GIS/usa/NEXRAD_Sites/nexrad sites','code')
@@ -1683,7 +1689,7 @@ def RasterMap(RasterPath, ShapeFile, OutFilePath, title, minPr, maxPr):
         m.plot(point[0], point[1], marker='+', color='r', markersize=8, markeredgewidth=4)
         
     # Add DEM contour to the plot
-    DEMfile='‪P:/2021/ArizonaStorm/Data/GIS/1kmDEM_usa.tif'
+    DEMfile='O:/GIS/usa/1km_DEM/Elevation_GRID/1kmDEM_usa.tif'
     gdataDEM = gdal.Open(DEMfile.lstrip('\u202a'))
     geoDEM = gdataDEM.GetGeoTransform()
     dataDEM = gdataDEM.ReadAsArray()
