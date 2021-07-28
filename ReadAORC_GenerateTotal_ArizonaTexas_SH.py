@@ -161,47 +161,6 @@ if Flag=='AORC':
     BF.RasterMap(FileName, ShapeFile, OutFilePath, title, minPr, maxPr)
     
 
-# #
-# # Generate 5yr, 10yr and entire period rainfall
-# #
-# counter5=0
-# counter10=0
-
-# for iAr in range(len(Tot1yrAr['AORC'])):
-#     Tot['AORC']=Tot1yrAr['AORC'][iAr]+Tot['AORC']
-#     if counter5<5:
-#         Tot5yr['AORC']=Tot1yrAr['AORC'][iAr]+Tot5yr['AORC']
-#         counter5=counter5+1
-#     else:
-#         FileName5=OutputDir+"Tif/5YrTotalPr_"+str(YrRange[iAr-5])+'_'+str(YrRange[iAr-1])+Units+"_F.tif"
-#         BF.CreateMatrixFileFloat(FileName5,Tot['AORC'],len(Tot['AORC'][0]), len(Tot['AORC']),AORCgeotransform,ProjSys_AORC)
-#         OutFilePath5="P:/2021/"+ProjName[ProjFlag]+"/Data/AORC/Plot2/5YrTot_"+str(YrRange[iAr-5])+'_'+str(YrRange[iAr-1])+".jpg"
-#         title5=str(YrRange[iAr-5])+'_'+str(YrRange[iAr-1])+' Total Precip (mm)- 5 yr'
-#         maxPr5=25000
-#         BF.RasterMap(FileName5, ShapeFile, OutFilePath5, title5, minPr, maxPr5)
-#         counter5=0
-#         Tot5yr['AORC']=np.zeros((nrow_AORC,ncol_AORC))
-#     if counter10<10:
-#         Tot10yr['AORC']=Tot1yrAr['AORC'][iAr]+Tot10yr['AORC']
-#         counter10=counter10+1
-#     else:
-#         FileName10=OutputDir+"Tif/10YrTotalPr_"+str(YrRange[iAr-10])+'_'+str(YrRange[iAr-1])+Units+"_F.tif"
-#         BF.CreateMatrixFileFloat(FileName10,Tot['AORC'],len(Tot['AORC'][0]), len(Tot['AORC']),AORCgeotransform,ProjSys_AORC)
-#         OutFilePath10="P:/2021/"+ProjName[ProjFlag]+"/Data/AORC/Plot2/10YrTot_"+str(YrRange[iAr-10])+'_'+str(YrRange[iAr-1])+".jpg"
-#         title10=str(YrRange[iAr-10])+'_'+str(YrRange[iAr-1])+' Total Precip (mm)- 10 yr'
-#         maxPr10=35000
-#         BF.RasterMap(FileName10, ShapeFile, OutFilePath10, title10, minPr, maxPr10)
-#         counter10=0
-#         Tot10yr['AORC']=np.zeros((nrow_AORC,ncol_AORC))
-    
-# FileName=OutputDir+"Tif/TotalPr_"+str(YrRange[0])+'_'+str(YrRange[-1])+Units+"_F.tif"
-# BF.CreateMatrixFileFloat(FileName,Tot['AORC'],len(Tot['AORC'][0]), len(Tot['AORC']),AORCgeotransform,ProjSys_AORC)
-# ShapeFile='O:/GIS/usa/StateBoundaries/states_21basic/states'
-# OutFilePath="P:/2021/"+ProjName[ProjFlag]+"/Data/AORC/Plot2/Tot_"+str(YrRange[0])+'_'+str(YrRange[-1])+".jpg"
-# title=str(YrRange[0])+'_'+str(YrRange[-1])+' Total Precip (mm)'
-# BF.RasterMap(FileName, ShapeFile, OutFilePath, title, minPr, Tot['AORC'].max())
-
-
 #
 # Generate 5yr, 10yr and entire period rainfall
 #
