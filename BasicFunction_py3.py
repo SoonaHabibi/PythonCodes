@@ -18,6 +18,7 @@ NEW FUNCTIONS (8/21/2019):
 15) ncdump
 16) dss2csv  (for point dss timeseries)
 17) RasterMap: Create map of raster file
+18) ReadStageIV: Different naming and compling format
  
 OLDER FUNCTIONS (before 8/21/2019):
 1) CreateMatrixFileFloat
@@ -1722,3 +1723,85 @@ def RasterMap(RasterPath, ShapeFile, OutFilePath, title, minPr, maxPr):
     plt.legend()
     plt.savefig(OutFilePath,bbox_inches='tight',dpi=500)
     plt.close()
+    
+    
+    
+    
+##########################################################################33
+##ReadStageIV
+##########################################################################
+def ReadStageIV(StageIVDir,dateStr):
+    """
+    This Function gets a compile (.z/.gz) StageIV file in Grib format, and opens the file and save it in 'img'
+    #### Input:
+    1. dateStr: date of the grib file (string, '%Y%m%d%H') 
+    2. StageIVDir: Path to the stageIV data
+    #### Output:
+    1. img: this function returns 'img' variable
+    """
+    
+    import os
+    import gzip
+    import subprocess
+    import shutil
+    from osgeo import gdal
+
+    fname=StageIVDir+'st4.'+dateStr+'.01h.gz'
+    fname1=StageIVDir+'st4_pr.'+dateStr+'.01h.gz'
+    fname2=StageIVDir+'ST4.'+dateStr+'.01h.gz'
+    fname3=StageIVDir+'ST4.'+dateStr+'.01h.z'
+    fname4=StageIVDir+'st4.'+dateStr+'.01h.z'
+    
+    try:
+        if os.path.exists(fname):
+            print(fname)
+            if not os.path.exists(fname[:-3]):
+                with gzip.open(fname, 'rb') as f_in:
+                    with open(fname[:-3], 'wb') as f_out:
+                        shutil.copyfileobj(f_in, f_out)               
+            img = gdal.Open(fname[:-3])
+            return img
+            
+        elif os.path.exists(fname1): 
+            print(fname1)
+            if not os.path.exists(fname1[:-3]):
+                with gzip.open(fname1, 'rb') as f_in:
+                    with open(fname1[:-3], 'wb') as f_out:
+                        shutil.copyfileobj(f_in, f_out)              
+            img = gdal.Open(fname1[:-3])
+            return img
+            
+        elif os.path.exists(fname2): 
+            print(fname2)
+            if not os.path.exists(fname2[:-3]):
+                with gzip.open(fname2, 'rb') as f_in:
+                    with open(fname2[:-3], 'wb') as f_out:
+                        shutil.copyfileobj(f_in, f_out)
+            img = gdal.Open(fname2[:-3])
+            return img
+            
+        elif os.path.exists(fname3)|os.path.exists(fname3[:-2]):
+            if not os.path.exists(fname3[:-2]):
+                out="F:/StageIV/"
+                unzip_cmd_str = 'C:/"Program Files"/WinRAR/WinRAR.exe' + " x " + fname3 + " *.* " + out
+                subprocess.call(unzip_cmd_str,shell=True)
+                os.remove(fname3)
+                print ('Unzip: ',fname3)
+            img = gdal.Open(fname3[:-2])
+            return img
+
+        elif os.path.exists(fname4)|os.path.exists(fname4[:-2]): 
+            if not os.path.exists(fname4[:-2]):
+                out="F:/StageIV/"
+                unzip_cmd_str = 'C:/"Program Files"/WinRAR/WinRAR.exe' + " x " + fname4 + " *.* " + out
+                subprocess.call(unzip_cmd_str,shell=True)
+                os.remove(fname4)
+                print ('Unzip: ',fname4)   
+            img = gdal.Open(fname4[:-2])
+            return img
+
+        else:        
+            print ("Not Available ", dateStr)
+            
+    except:
+            print('Can not read the file')
