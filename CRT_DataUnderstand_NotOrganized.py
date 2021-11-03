@@ -101,6 +101,7 @@ gd.columns = names
 new_gd=gd.append(point_gdb)
 # Spatial join, add reach and subbasin information 
 gd_reach=geopandas.read_file(reachSHP)
+gd_reach.columns=["HMS_Model",'ReachID','geometry']
 gd_subbasin=geopandas.read_file(subbasinSHP)
 gd_reach_reproj=gd_reach.to_crs(new_gd.crs)
 gd_subbasin_reproj=gd_subbasin.to_crs(new_gd.crs)
@@ -111,10 +112,26 @@ joined2=joined2.rename(columns={'Name':'SubasinName'})
 path=direc+'GIS/Shapefile/DamsWithRemaingSite_WithReachSubInfo.shp'
 joined2.to_file(path)
 # Select only calibration site and sort the df based on 'site'
-gd_crop=joined2[joined2['calibration_site']=='Yes'][['site','Reach', 'ReachID','SubbasinID', 'SubasinName']]
+path2=direc+'GIS/Shapefile/CalibrationSite_WithReachSubInfo.shp'
+junction='C:/Users/SARDEKANI/Documents/USACE_Seattle/WEST/Junction1.csv'
+df_junc=pd.read_csv(junction, encoding='utf-8')
+df_junc.columns=['site', 'DownStream', 'ds_element']
+gd_site=joined2[joined2['calibration_site']=='Yes']
+gd_site=gd_site.merge(df_junc, on='site')
+gd_site.to_file(path2)
+gd_crop=joined2[joined2['calibration_site']=='Yes'][['site','HMS_Model', 'ReachID','SubbasinID', 'SubasinName']]
 gd_crop=gd_crop.sort_values('site')
 
+# Generate plot
+fig, ax=plt.subplots(1,figsize=[12,8],dpi=400)
+joined2[joined2['calibration_site']=='Yes'].plot(ax=ax,c='red',marker='p')
+gd_subbasin_reproj.plot(ax=ax,facecolor="none",edgecolor='yellow')
+gd_reach_reproj.plot(ax=ax,facecolor="none",edgecolor='blue')
+img=direc+'plot/Map.jpg'
 
+plt.savefig(img)
+plt.close()   
+plt.show()
 
 
 # Compare PNW unimpaired with and with out Natural Lake
